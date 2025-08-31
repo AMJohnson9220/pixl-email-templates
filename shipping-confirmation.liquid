@@ -1,0 +1,470 @@
+{% if fulfillment.item_count == item_count %}
+  {% capture email_title %}Great News! Your PIXL order is on its way{% endcapture %}
+  {% capture email_body %}Good news - your PIXL order {{ order.name }} has been shipped and is on its way to you! 🎉{% endcapture %}
+{% elsif fulfillment.item_count > 1 %}
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}Great News! Your PIXL order is on its way{% endcapture %}
+    {% capture email_body %}Good news - your PIXL order {{ order.name }} has been shipped and is on its way to you! 🎉{% endcapture %}
+  {% else %}
+    {% capture email_title %}Some items in your PIXL order are on the way{% endcapture %}
+    {% capture email_body %}Some items in your PIXL order are on the way. Track your shipment to see the delivery status.{% endcapture %}
+  {% endif %}
+{% else %}
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}The last item in your PIXL order is on the way{% endcapture %}
+    {% capture email_body %}The last item in your order is on the way. Track your shipment to see the delivery status.{% endcapture %}
+  {% else %}
+    {% capture email_title %}One item in your PIXL order is on the way{% endcapture %}
+    {% capture email_body %}One item in your order is on the way. Track your shipment to see the delivery status.{% endcapture %}
+  {% endif %}
+{% endif %}
+
+{% capture email_emphasis %}Estimated delivery date: <strong>{{fulfillment.estimated_delivery_at | date: format: 'date'}}</strong>{% endcapture %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ email_title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/notifications/styles.css">
+    <style>
+      .button__cell {
+        background: {{ shop.email_accent_color }};
+      }
+      a,
+      a:hover,
+      a:active,
+      a:visited {
+        color: {{ shop.email_accent_color }};
+      }
+
+      .banner-content {
+        max-width: 375px;
+        width: 100%;
+      }
+
+      .banner-title {
+        color: #fff !important;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 38px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .banner-text {
+        color: #fff !important;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        margin: 0;
+        padding-bottom: 24px;
+      }
+
+      .button__cell {
+        background-color: transparent !important;
+      }
+
+      .button__cell a {
+        background: #fff !important;
+        border: 1px solid #9B7CEA;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
+        color: #351684 !important;
+        max-width: 175px !important;
+        margin-bottom: 44px;
+      }
+
+      .order-title {
+        color: #181D27 !important;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 26px;
+        margin: 24px 0 4px;
+      }
+
+      .order-name {
+        color: #181D27 !important;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 17px;
+        margin: 0 0 4px;
+      }
+
+      .disclaimer__subtext {
+        color: #181D27;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 17px;
+      }
+
+      .item-vendor {
+        display: block;
+        color: #181D27;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+        margin-bottom: 6px;
+      }
+
+      .item-title {
+        display: block;
+        color: #414651;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        margin-bottom: 8px;
+      }
+
+      .item-price {
+        color: #181D27;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+      }
+
+      .item-qty {
+        color: #414651;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+
+      .order-summary,
+      .order-items-table,
+      .order-subtotal,
+      .order-address,
+      .action-buttons,
+      .email-info,
+      .contact-info {
+        max-width: 330px;
+        margin: auto;
+        width: 100%;
+      }
+
+      .info-text {
+        color: #181D27;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        margin: 0;
+        padding: 0 0 12px;
+      }
+
+      .footer-link {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 22px;
+      }
+
+      @media screen and (max-width: 600px) {
+        .header {
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+        }
+
+        .banner-image {
+          background: #300f68;
+          width: 100% !important;
+        }
+
+        .container {
+          width: 100% !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <table class="body">
+      <tr>
+        <td>
+          {% comment %} Logo {% endcomment %}
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0">
+            <tr>
+              <td align="center">
+                <center>
+                  <table cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td align="center" style="padding: 16px;">
+                        <img
+                          src="{{ shop.email_logo_url }}"
+                          alt="{{ shop.name }}"
+                          style="max-width: 100px;">
+                      </td>
+                    </tr>
+                  </table>
+                </center>
+              </td>
+            </tr>
+          </table>
+
+          {% comment %} Banner {% endcomment %}
+          <table class="row content">
+            <tr>
+              <td>
+                <center>
+                  <table class="container banner-image">
+                    <tr>
+                      <td align="center" class="shop-name__cell">
+                        <img src="https://cdn.shopify.com/s/files/1/0696/2659/3497/files/Pixl_Email_Shipping_Image.png?v=1756596761" width="100%">
+
+                        <div class="banner-content">
+                          <h1 class="banner-title">Hi {{ customer.first_name }}</h1>
+                          <h2 class="banner-title" style="padding-bottom: 16px;">{{ email_title }}</h2>
+                          <p class="banner-text">{{ email_body }}</p>
+
+                          {% if order_status_url %}
+                            <table class="row actions">
+                              <tr>
+                                <td class="empty-line">&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td class="actions__cell">
+                                  <table class="button main-action-cell">
+                                    <tr>
+                                      <td class="button__cell">
+                                        <a href="{{ fulfillment.tracking_url }}" class="button__text">Track your order</a>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </center>
+              </td>
+            </tr>
+          </table>
+
+          {% comment %} Order summary {% endcomment %}
+          <table align="center" class="row section order-summary">
+            <tr>
+              <td class="section__cell" style="padding: 0;">
+                <center>
+                  <table class="container">
+                    <tr>
+                      <td>
+                        <h3 class="order-title">Your order summary</h3>
+                        <p class="order-name">
+                          <b>Order No.</b>
+                          {{ order.name }}</p>
+
+                        {% if fulfillment.tracking_numbers.size > 0 %}
+                          <p class="disclaimer__subtext" style="margin: 0; margin-bottom: 24px;">
+                            {% if fulfillment.tracking_numbers.size == 1 and fulfillment.tracking_company and fulfillment.tracking_url %}
+                              Tracking No.
+                              <a href="{{ fulfillment.tracking_url }}" style="color: #471EB0; font-size: 12px; line-height: 17px; text-decoration: underline;">{{ fulfillment.tracking_numbers.first }}</a>
+                            {% elsif fulfillment.tracking_numbers.size == 1 %}
+                              Tracking No. {{ fulfillment.tracking_numbers.first }}
+                            {% else %}
+                              {{ fulfillment.tracking_company }} tracking numbers:<br/>
+                              {% for tracking_number in fulfillment.tracking_numbers %}
+                                {% if fulfillment.tracking_urls[forloop.index0] %}
+                                  <a href="{{ fulfillment.tracking_urls[forloop.index0] }}" style="color: #471EB0; font-size: 12px; line-height: 17px; text-decoration: underline;">
+                                    {{ tracking_number }}
+                                  </a>
+                                {% else %}
+                                  {{ tracking_number }}
+                                {% endif %}
+                                <br/>
+                              {% endfor %}
+                            {% endif %}
+                          </p>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  </table>
+                </center>
+              </td>
+            </tr>
+          </table>
+
+          {% comment %} Order items table {% endcomment %}
+          <table align="center" class="row section order-items-table">
+            <tr>
+              <td class="section__cell" style="padding: 0">
+                <center>
+                  <table class="container">
+                    <tr>
+                      <td>
+                        <table
+                          class="line-item-table"
+                          width="100%"
+                          cellspacing="0"
+                          cellpadding="10">
+                          <tbody>
+                            {% assign unique_line_items = subtotal_line_items | uniq %}
+                            {% for line in unique_line_items %}
+                              <tr width="100%" style="display:block; border-radius: 4px; background: #F3F1FF; margin-bottom: 12px; padding: 12px 16px 12px 0;">
+                                <td style="padding: 0;">
+                                  {% assign image_url = line.product.featured_image | img_url: 'medium' %}
+                                  {% if image_url %}
+                                    <img
+                                      src="{{ image_url }}"
+                                      alt="{{ line.product.title }}"
+                                      align="left"
+                                      width="100"
+                                      style="max-width: 90px;" />
+                                  {% else %}
+                                    <img
+                                      src="{{ 'notifications/no-image.png' | shopify_asset_url }}"
+                                      align="left"
+                                      width="100"
+                                      style="max-width: 90px;"
+                                      class="order-list__no-product-image" />
+                                  {% endif %}
+                                </td>
+
+                                <td width="100%" style="padding: 0; padding-left: 8px;">
+                                  <span class="item-vendor">{{ line.product.metafields.custom.model }}</span>
+                                  <span class="item-title">{{ line.product.metafields.custom.flavour }}</span>
+
+                                  <table width="100%">
+                                    <tr>
+                                      <td style="text-align: left;">
+                                        <p class="item-price">{{ line.price | money }}</p>
+                                      </td>
+
+                                      <td style="text-align: right;">
+                                        <p class="item-qty">Qty: {{ line.quantity }}</p>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </center>
+              </td>
+            </tr>
+          </table>
+          {% comment %} End of order items table {% endcomment %}
+
+          {% comment %} Info section {% endcomment %}
+          <table
+            align="center"
+            class="row section email-info"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0">
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td>
+                      <p class="info-text">We'll keep you updated every step of the way, but if you have any questions, feel free to reach out to our support team at
+                        <b>info@pixlvape.com.</b>
+                      </p>
+
+                      <p class="info-text">Thanks again for choosing PIXL - we can't wait for you to enjoy your order.</p>
+
+                      <p class="info-text" style="padding-bottom: 0;">
+                        <b>Stay fresh,</b>
+                      </p>
+                      <p class="info-text">
+                        <b>The PIXL Team</b>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          {% comment %} Customer service {% endcomment %}
+          <table
+            align="center"
+            class="row section email-info"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="margin-top: 12px; margin-bottom: 24px;">
+            <tr>
+              <td align="center">
+                <table
+                  width="330"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="background: #F3F1FF; border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px 0px; padding: 20px;">
+                  <tr>
+                    <td align="center" style="padding: 16px;">
+                      <h3 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: #181D27;">Any Questions</h3>
+                      <p style="margin: 0 0 20px 0; font-size: 14px; color: #414651;">We're happy to help you with any queries about your order.</p>
+                      <a href="https://pixlvape.com/pages/contact" style="display: inline-block; background-color: #5925DC; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px 0px;">
+                        Contact us
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          {% comment %} Footer {% endcomment %}
+          <table
+            align="center"
+            class="row section footer"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="background-color: #471EB0;">
+            <tr>
+              <td align="center">
+                <table
+                  width="298"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 0 auto;">
+                  <tr>
+                    <td align="center" style="padding: 24px;">
+                      <img
+                        src="{{ shop.email_logo_url }}"
+                        alt="{{ shop.name }}"
+                        style="max-width: 135px; margin-bottom: 16px;" />
+
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="margin-bottom: 12px;">
+                        <tr>
+                          <td align="left">
+                            <a href="{{ shop.url }}" class="footer-link">Store</a>
+                          </td>
+                          <td align="center">
+                            <a href="https://pixlvape.com/account" class="footer-link">Account</a>
+                          </td>
+                          <td align="right">
+                            <a href="https://pixlvape.com/pages/contact" class="footer-link">Contact</a>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <p style="color: #ffffff; font-size: 12px; font-weight: 400; line-height: 17px; margin-top: 20px;">© 2025 pixlvape.com - All rights reserved.</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
