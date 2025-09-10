@@ -113,7 +113,7 @@
                   table-layout: fixed;
                 "
               >
-                <a href="https://pixlvape.com/" target="_blank">
+                <a href="https://pixlvape.com/pages/pixl-club" target="_blank">
                   <img
                   src="https://d3k81ch9hvuctc.cloudfront.net/company/YACJWm/images/b2001038-df8c-44a3-8f2d-c632146dca24.png" width="100%"
                   />
@@ -167,10 +167,10 @@
               >
                 <h1 class="banner-title">Hi {{ first_name }}</h1>
 
-                <h2 class="pre-title">You have £{{ person.store_credit |floatformat:2 }} in store credit!</h2>
+                <h2 class="pre-title">You have earned £{{ person.store_credit|default:'' }}</h2>
 
                 <p class="banner-text">
-                  Welcome to the PIXL Fam 🙌 You've officially joined the crew, and that means you're about to get way more than just epic flavours.</b>
+                  You can easily redeem your points during your next purchase at the checkout. Just make sure to apply them before finalising your order!</b>
                 </p>
               </td>
             </tr>
@@ -213,7 +213,7 @@
                 <a
                   class="button--shop-now"
                   style="display: block"
-                  href="https://pixlvape.com/"
+                  href="https://pixlvape.com"
                   target="_blank"
                   >Shop now</a
                 >

@@ -329,7 +329,8 @@
 
                                 <td width="100%" style="padding: 0; padding-left: 8px;">
                                   <span class="item-vendor">{{ line.product.metafields.custom.model }}</span>
-                                  <span class="item-title">{{ line.product.metafields.custom.flavour }}</span>
+                                  {% assign lineTitle = line.product.title | remove: ' Pixl 6000 Disposable' | remove: 'Pixl 8000 Pod' | remove: 'Pixl 8000 Kit' | remove: 'Pixl Duo 12 Pod' | remove: 'Pixl Duo 12 Kit' %}
+                                  <span class="item-title">{{ lineTitle }}</span>
 
                                   <table width="100%">
                                     <tr>
@@ -434,7 +435,7 @@
                   <tr>
                     <td align="center" style="padding: 24px;">
                       <img
-                        src="{{ shop.email_logo_url }}"
+                        src="https://cdn.shopify.com/s/files/1/0696/2659/3497/files/Pixl_Logo_White.png?v=1757507028"
                         alt="{{ shop.name }}"
                         style="max-width: 135px; margin-bottom: 16px;" />
 
