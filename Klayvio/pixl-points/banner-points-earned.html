@@ -167,7 +167,7 @@
               >
                 <h1 class="banner-title">Hi {{ first_name }}</h1>
 
-                <h2 class="pre-title">You have earned £{{ person.store_credit|default:'' }}</h2>
+                <h2 class="pre-title">You have earned £{{ person.store_credit |floatformat:2  }}</h2>
 
                 <p class="banner-text">
                   You can easily redeem your points during your next purchase at the checkout. Just make sure to apply them before finalising your order!</b>
